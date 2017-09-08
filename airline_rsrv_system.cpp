@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include <list>	 //διπλά linked list
+#include <list>	 //double linked list
 #include <iostream>
-#include <string> // atoi 
-#include <sstream> // για το stringstream (χρησιμοποιείται για μετατροπή int σε string)
+#include <string> // for the atoi conversion
+#include <sstream> // for the stringstream (used to convert into to string)
 #include <iomanip> // for organizing output into columns
 #include <vector>
 
@@ -16,23 +16,23 @@ class Person;
 class Flight;
 class Queue;
 
-/* ----ΚΛΑΣΕΙΣ---- */
+/* ----CLASSES---- */
 
-class Menu //κλάση για τη διαχείριση του κεντρικού μενού
+class Menu //class for managing the app's menu
 {
 	public:
-		static void displayMenu(); //προβάλλει το κεντρικό μενού επιλογής
-		static void select(int selection); //δέχεται την είσοδο του χρήστη και εκτελεί την κατάλληλη λειτουργία
-		static void exit_prog(); //όταν κληθεί, τερματίζει το πρόγραμμα (επιλογή μενού Νο 8)
+		static void displayMenu(); // displays the menu
+		static void select(int selection); // receives user's input and performs the corresponding function
+		static void exit_prog(); // exits the app
 };
 
-struct Time //δομή για τη διαχείριση της ώρα αναχώρησης και άφιξης των πτήσεων
+struct Time // structure for managing the Arrival and Departing times
 {
 	int min; 
 	int hour;
 };
 
-class Flight //κλάση για τη διαχείριση λειτουργιών σχετικά με τις πτήσεις
+class Flight // class for managing the availabe functions of a flight
 {				
 	private:
 	
@@ -41,20 +41,20 @@ class Flight //κλάση για τη διαχείριση λειτουργιώ�
 		Time t_leave, t_arrive;
 		
 	public:
-		/* --ΠΡΟΣΘΑΦΑΙΡΕΣΗ ΠΤΗΣΕΩΝ--*/
+		/* --ADD/REMOVE FLIGHTS--*/
 		void addFlight(); //διαχειρίζεται την προσθήκη πτήσεων (επιλογή μενού Νο 1)
 		static void deleteFlight(int num); //διαχειρίζεται την αφαίρεση πτήσεων (επιλογή μενού Νο 2)
 		
-		/* --ΠΡΟΒΟΛΗ ΠΤΗΣΕΩΝ--*/
+		/* --DISPLAY FLIGHTS--*/
 		static void displayFlightInfo(int num); //προβάλλει τις πληροφορίες μιας πτήσης (επιλογή μενού Νο 3)
 		static void displaySchedule(); //προβάλλει τις πτήσεις που υπάρχουν καταχωρημένες στο σύστημα (επιλογή μενού Νο 4)
 		
-		/* --ΚΡΑΤΗΣΗ-ΜΕΙΩΣΗ ΘΕΣΕΩΝ--*/
+		/* --BOOK SEATS--*/
 		static void resSeat(int num, int val); //αυξομειώνει τις κατοχυρωμένες θέσεις μιας πτήσεις
 		
-		/* --ΕΛΕΓΧΟΣ ΣΤΟΙΧΕΙΩΝ ΠΤΗΣΕΩΝ--*/
-		static bool flightExists(int num); //ελέγχει αν υπάρχουν κενές θέσεις σε μία πτήση	
-		static bool checkForSeats(int num); //ελέγχει αν μια πτήση υπάρχει ήδη στο σύστημα
+		/* --FLIGHT CHECKERS--*/
+		static bool flightExists(int num); // check flight is booked	
+		static bool checkForSeats(int num); // checks for already registerd flight in the system
 		
 		/* --GETTERS--*/
 		int getFlightNo() { return this -> flightNo; }
@@ -64,7 +64,7 @@ class Flight //κλάση για τη διαχείριση λειτουργιώ�
 		string getDestination() { return this -> to; }
 };			
 	
-class Person //κλάση για τη διαχείριση των λειτουργιών αναφορικά με τους επιβάτες				
+class Person //class for managing the functions of a passenger				
 {
 	private:
 	
@@ -73,15 +73,16 @@ class Person //κλάση για τη διαχείριση των λειτουρ
 		string name, surname, nationallity, address;		
 	
 	public:
-		/* --ΚΡΑΤΗΣΗ-ΑΚΥΡΩΣΗ ΘΕΣΕΩΝ-- */
-		void book(); //κράτηση θέσεων του εκάστοτε πελάτη (επιλογή μενού Νο 6)
-		void bookFromQueue(int num); //κράτηση θέσεων του αρχαιότερου (καλείται ΜΟΝΟ στην περίπτωση ακύρωσης κράτησης)
-		void cancel(); //ακύρωση κράτησης (επιλογή μενού Νο 7)
+		/* --BOOK FLIGHT-- */
+		void book(); // book flight for each customer (Menu Option Νο 6)
+		void bookFromQueue(int num); // book flight for the oldest customer in 
+					    // (call ONLY when a reservation is cancelled)
+		void cancel(); //cancel a reservation (Menu Option Νο 7)
 		
-		/* --ΠΡΟΒΟΛΗ ΣΤΟΙΧΕΙΩΝ ΕΠΙΒΑΤΗ-- */
+		/* --SHOW PASSENGER'S INFO-- */
 		static bool displayPersonInfo(int passport);
 		
-		/* --ΕΛΕΓΧΟΣ ΣΤΟΙΧΕΙΩΝ-- */
+		/* --CHECHKER FOR UNIQUE PASSPORT-- */
 		static bool uniquePass(int passport);
 		
 		/* --GETTERS-- */
@@ -91,28 +92,28 @@ class Person //κλάση για τη διαχείριση των λειτουρ
 		
 };	
 
-struct Node //δομή για τη διαχείριση των αντικειμένων της εκάστοτε ουράς
+struct Node //structure for managing each flight's queue
 {
     Person person;
     Node* next;
 };
 
-class Queue //ουρά αναμονής για την αποθήκευση των πελατών
+class Queue // class that stores passengers on each flight's queue
 {
 
     private:
 
-		int queueNo;
+	int queueNo;
         Node* rear;
         Node* front;	
 	
 	public:
-		/* --ΟΡΙΣΜΟΣ ΝΕΑΣ ΟΥΡΑΣ ΑΝΑΜΟΝΗΣ-- */
-        Queue(int queueId); //ορίζει μια νέα ουρά για την εκάστοτε πτήση, με ID τον αντίστοιχο αιρθμό πτήσης
+		/* --CREATE NEW QUEUE-- */
+        Queue(int queueId); // queueID is the same as the flight number for each flight
 		
-		/* --ΠΡΟΣΘΑΦΑΙΡΕΣΗ ΑΝΤΙΚΕΙΜΕΝΩΝ ΣΤΗΝ ΟΥΡΑ-- */
-        void enqueue(Person p); //προσθέτει στην ουρά της εκάστοτε πτήσης ένα νέο αντικείμενο πελάτη-Person
-        void dequeue(); //αφαιρεί στην ουρά της εκάστοτε πτήσης ένα αντικείμενο πελάτη-Person
+		/* --ADD/REMOVE ELEMENTS-- */
+        void enqueue(Person p); // add a new passenger
+        void dequeue(); // remove the passenger add last 
 		
 		/* --ΠΡΟΒΟΛΗ ΣΤΟΙΧΕΙΩΝ ΟΥΡΑΣ-- */
 		static void display(int num); //εμφανίζει τους πελάτες, που βρίσκονται κατοχυρωμένοι 
@@ -121,8 +122,8 @@ class Queue //ουρά αναμονής για την αποθήκευση τω�
 		/* --ΕΠΙΣΤΡΟΦΗ ΑΡΧΑΙΟΤΕΡΟΥ ΧΡΗΣΤΗ-- */
 		Person oldest(); //επιστρέφει το αντικέιμενο του αρχαιότερου πελάτη, μέσω της κλάσης Person
 		
-		/* --ΕΛΕΓΧΟΣ ΓΙΑ ΚΕΝΗ ΟΥΡΑ-- */
-		bool isEmpty(); //επιστρέφει true αν η ουρά είναι κενή
+		/* --CHECK FOR EMPTY QUEUE-- */
+		bool isEmpty(); // returns true if queue is empty
 		
 		/* --GETTERS-- */
 		int getNo() { return this -> queueNo; }	
@@ -142,12 +143,12 @@ class Queue //ουρά αναμονής για την αποθήκευση τω�
 		}
 };
 
-/* ----ΣΥΝΑΡΤΗΣΕΙΣ ΕΛΕΓΧΟΥ ΕΙΣΟΔΟΥ---- */
+/* ----FUNCTIONS-CHECKERS FOR THE INPUTS---- */
 
-/* --ΕΛΕΓΧΟΣ ΓΕΝΙΚΗΣ ΠΕΡΙΠΤΩΣΗΣ-- */
-bool checkTime(string time) { //έλεγχος για την εγκυρότητα της μορφής ώρας (αποδεκτή μορφή xx:xx, όπου x = φυσικός αριθμός
+/* --CHECKERS FOR DIRECT FLIGHTS-- */
+bool checkTime(string time) { // check the validity of the time (must be xx:xx, where x = Natural number)
 	
-	//είσοδος ΜΟΝΟ αν το string δεν είναι κενό
+	// enter ONLY if string is NOT empty
 	if(!time.empty()){
 		for (int i=0; i < time.length(); i++) {		
 			if (i==2){
@@ -160,15 +161,15 @@ bool checkTime(string time) { //έλεγχος για την εγκυρότητ�
 			}				
 		}
 		return true;
-	}else{//return false αν το string είναι άδειο
+	}else{ 
 		return false;
 	}
 	
 }
 
-bool checkNumber(string s){ //έλεγχει αν το δοθέν string αποτελείται μόνο από αριθμούς
+bool checkNumber(string s){ // checks if the input string consists ONLY of numbers
 	
-	//είσοδος μόνο αν το string ΔΕΝ είναι κενό
+	// enter if string is NOT empty
 	if(!s.empty()){
 		for (int i = 0; i < s.length(); i++){
 			if ( ((s.at(i) >= 'a' && s.at(i) <= 'z') || (s.at(i) >= 'A' && s.at(i) <= 'Z') || (s.at(i) == ' ')) ){
@@ -176,22 +177,21 @@ bool checkNumber(string s){ //έλεγχει αν το δοθέν string απο�
 			}
 		}
 	
-		//ελεγχος αν το δοθεν string, όταν μετατραπεί σε αριθμό είναι θετικός
+		// check if string is a postive number
 		if ( atoi(s.c_str()) > 0 ){
 			return true;
 		}else{
 			return false;
 		}
-	}else{ //είσοδος εδώ όταν το string είναι κενό
+	}else{
 		return false;
 	}
 	
 	
 }
 
-bool checkString(string s){ //έλεγχει αν το δοθέν string αποτελείται μόνο από γράμματα
+bool checkString(string s){ // checks if string consists only of letters
 	
-	//είσοδος μόνο εάν το string ΔΕΝ είναι κενό
 	if(!s.empty()){
 		for (int i = 0; i < s.length(); i++){
 			if ( !((s.at(i) >= 'a' && s.at(i) <= 'z') || (s.at(i) >= 'A' && s.at(i) <= 'Z')) ){
@@ -200,15 +200,15 @@ bool checkString(string s){ //έλεγχει αν το δοθέν string απο�
 		}
 		return true;
 	}
-	else{ //return false αν το string είναι άδειο
+	else{ //return false
 		return false;
 	}
 	
 	
 }
 
-/* --ΕΛΕΓΧΟΣ ΜΟΝΟ ΣΤΗΝ ΠΕΡΙΠΤΩΣΗ ΕΝΑΛΛΑΚΤΙΚΩΝ ΠΤΗΣΕΩΝ-- */
-bool checkTime2(Time tLeaving, Time tArriving){	//ελεγχος των ωρών αφίξεων και αναχωρήσεων
+/* --CHECKER FOR NON-DIRECT FLIGHTS-- */
+bool checkTime2(Time tLeaving, Time tArriving){	// checks the validity of arrival and departure time
 	if(tLeaving.hour > tArriving.hour){
 		return true;
 	}else if(tLeaving.hour == tArriving.hour){
@@ -227,13 +227,13 @@ bool checkTime2(Time tLeaving, Time tArriving){	//ελεγχος των ωρών
 */
 
 
-/* ----GLOBAL ΜΕΤΑΒΛΗΤΕΣ---- */
+/* ----GLOBAL VARS---- */
 
-list<Flight> flist; //αποθηκεύονται οι πτήσεις του συστήματος
-list<Person> plist; //αποθηκευόνται οι πελάτες 
-list<Queue> qlist; //αποθηκεύονται οι πελάτες που βρίσκονται σε ουρά αναμονής
+list<Flight> flist; // store the flights of the system
+list<Person> plist; // store the passengers 
+list<Queue> qlist; // store the customers in the flights' waiting queues
 
-/* ----ΣΥΝΑΡΤΗΣΕΙΣ ΤΗΣ ΟΥΡΑΣ---- */
+/* ----FUNCTION OF CLASS Queue---- */
 
 Queue::Queue(int queueId){
 	
@@ -307,12 +307,12 @@ bool Queue::isEmpty(){
 } 
 
 
-/* ----ΣΥΝΑΡΤΗΣΕΙΣ ΤΗΣ ΚΛΑΣΗΣ Menu---- */
+/* ----FUNCTIONS OF CLASS Menu---- */
 
 void Menu::displayMenu(){
 	
-	int selection;	//η είσοδος του χρήστη
-	string temp; //string για την προσωρινή αποθήκευση της εισόδου του χρήστη
+	int selection;	// user's menu choice
+	string temp; // temp to store user's input
 	
 	do{
 			cout << "-----------------------------------------------";
@@ -333,7 +333,7 @@ void Menu::displayMenu(){
 			cout << "Enter the number of a menu option: ";
 			cin >> temp;
 			
-			//έλεγχος εγκυρότητας εισόδου
+			// check validity of input
 			while (!checkNumber(temp)) {
 				cout << "Please enter a number!" << endl;
 				cin.clear();
@@ -342,7 +342,7 @@ void Menu::displayMenu(){
 			}
 			cout << endl;
 			
-			selection = atoi(temp.c_str()); //μετατροπή της έγκυρης εισόδου σε int
+			selection = atoi(temp.c_str());
 			select(selection);
 	
 	}while(true);
@@ -350,9 +350,9 @@ void Menu::displayMenu(){
 
 void  Menu::select(int selection){
 	
-	Flight f; //αντικέιμενο της κλάσης Flight
-	Person p; //αντικέιμενο της κλάσης Person
-	string temp; //αποθηκεύεται προσωρινά ο αριθμός πτήσης ή διαβατηρίου που εισήγαγε ο χρήστης
+	Flight f; // FLight's object
+	Person p; // class Person's object
+	string temp; // temp to store input
 	
 	switch(selection){
 		case 1:
@@ -432,38 +432,38 @@ void  Menu::select(int selection){
 void Menu::exit_prog(){
 	
 	cout << "Thank you for using our system! \n";
-	exit(1); //έξοδος από το πρόγραμμα
+	exit(1); // exit
 }
 
-/* ----ΣΥΝΑΡΤΗΣΕΙΣ ΤΗΣ ΚΛΑΣΗΣ Flight---- */
+/* ----FUNCTIONS OF CLASS Flight---- */
 
 void Flight::addFlight(){ 
 	
-	/* ----ΔΗΛΩΣΗ-ΑΡΧΙΚΟΠΟΙΗΣΗ ΜΕΤΑΒΛΗΤΩΝ----*/
-	bool flag = false; //χρησιμοποιείται για έξοδο από Loops
+	/* ----INITIALISE VARS----*/
+	bool flag = false; // used in loops
 	
-	/* --ΔΙΑΧΕΙΡΙΣΗ ΚΑΙ ΕΛΕΓΧΟΣ ΕΓΚΥΡΟΤΗΤΑΣ ΤΙΜΩΝ ΩΡΑΣ (ΜΟΝΟ ΣΕ BOARDING ΚΑΙ ARRIVING TIME)-- */
-	vector<string> fields; //αποθηκεύεται, διαχωρισμένη,  η είσοδος του χρήστης που πρόκεται να ελεγχθεί
-	string temp; //αποθηκεύεται, προσωρινά, η είσοδος του χρήστη
-	char* pch; //αποθήκευση του αποτελέσματος της συνάρτησης strtok() 
-	int hour; //αποθήκευση προσωρινά της ώρας
-	int min; //αποθήκευση προσωρινά των λεπτών
+	/* --Check for arrival, departure time validity (USED ONLY IN BOARDING & ARRIVING TIME)-- */
+	vector<string> fields; // stores, splitted,  user input to be checked
+	string temp; // stores user's input temp
+	char* pch; // stores result of function strtok() 
+	int hour; // stores hour
+	int min; // store minutes
 
 	cout << "Add new flights by giving the following attributes: \n";
 	
-	//"καθάρισμα' του stream
+	// clean stream
 	cin.clear();
 	cin.ignore(256,'\n');
 	
-	/* --ΑΡΙΘΜΟΣ ΠΤΗΣΗΣ-- */
+	/* --FLIGHT NUBMER-- */
 	cout << "Flight Number: "; 
-	//λήψη εισόδου χρήστη
+	// get user's input
 	getline(cin, temp);
 	
 	do{
 		flag = true;
 		
-		//έλεγχος εισόδου
+		// check input
 		if (!checkNumber(temp)){
 			cout << "Please insert a valid Flight Number! " << endl;
 			flag = false;
@@ -479,11 +479,11 @@ void Flight::addFlight(){
 		}
 	}while(!flag);
 	
-	/* --ΠΟΛΗ ΑΝΑΧΩΡΗΣΗΣ-- */
+	/* --DEPARTURE-- */
 	cout << "Departure: ";
 	flag = false;
 	
-	//έλεγχος εισόδου
+	// check input
 	LOOP:do{
 		getline(cin, temp);
 		if ( (temp.length() <= 10) && (checkString(temp)) ){
@@ -495,11 +495,11 @@ void Flight::addFlight(){
 		}
 	}while(!flag);
 	
-	/* --ΠΟΛΗ ΑΦΙΞΗΣ-- */
+	/* --DESTINATION-- */
 	cout << "Destination: "; 
 	flag = false;
 	
-	//έλεγχος εισόδου
+	// check input
 	LOOP2:do{
 		getline(cin, temp);
 		if ( (temp.length() <= 10) && (checkString(temp)) && (temp.compare(this -> from)) ){
@@ -511,11 +511,11 @@ void Flight::addFlight(){
 		}
 	}while(!flag);
 	
-	/* --ΩΡΑ ΑΝΑΧΩΡΗΣΗΣ-- */
-	cout << "Boarding time (e.g. 19:40): "; //ask from admin for the boarding time
+	/* --DEPARTURE TIME-- */
+	cout << "Boarding time (e.g. 19:40): "; //ask from user for the boarding time
 	flag = false;
 	
-	//έλεγχος εισόδου
+	// check input
 	LOOP3:do{
 		getline(cin, temp);
 		
@@ -532,31 +532,31 @@ void Flight::addFlight(){
 		pch = strtok(t_temp, ":");
 		
 		while(pch != NULL){
-			fields.push_back(pch); //εισαγωγή των δύο διαχωρισμένων string (hours και minutes) σε έναν char array
+			fields.push_back(pch); 
 			pch = strtok(NULL, ":");
 		}
 		
-		hour = atoi(fields[0].c_str()); //αναθεση της ώρας στη μεταβλητή hour
-		min = atoi(fields[1].c_str()); //ανάθεση των λεπτών στη μεταβλητή min
+		hour = atoi(fields[0].c_str()); 
+		min = atoi(fields[1].c_str()); 
 		
-		//έλεγχος διαστήματος ώρας και λεπτών
+		// check time
 		if ((hour >=0 && hour<=23) && (min>=0 && min <=59)){ 
-			this -> t_leave.hour = hour; //"πέρασμα" της ώρας στο αντίστοιχο αντικείμενο 
-			this -> t_leave.min = min; //"πέρασμα" των λεπτών στο αντίστοιχο αντικείμενοs
+			this -> t_leave.hour = hour; 
+			this -> t_leave.min = min; 
 			flag = true;
 		}else{
 			cout << "Please insert a valid boarding time (e.g. 19:40)! ";
 			fields.clear();		
 		}	
 		
-	}while(!flag); //έξοδος αν η δοθείσα ώρα είναι ορθή
+	}while(!flag); 
 	
-	/* --ΩΡΑ ΑΦΙΞΗΣ-- */
+	/* --ARRIVAL TIME-- */
 	cout << "Arriving time (e.g. 21:40): ";
 	flag = false;
-	fields.clear();	//άδειασμα της λίστας fields (λόγω του προηγούμενου πεδίου, "ΩΡΑ ΑΝΑΧΩΡΗΣΗΣ")
+	fields.clear();	// clear fields (because it was used before, at "DEPARTURE TIME")
 	
-	//έλεγχος εισόδου
+	// check input
 	LOOP4:do{
 		getline(cin, temp);
 		
@@ -573,33 +573,33 @@ void Flight::addFlight(){
 		pch = strtok(t_temp, ":");
 		
 		while(pch != NULL){
-			fields.push_back(pch); //εισαγωγή των δύο διαχωρισμένων string (hours και minutes) σε έναν char array
+			fields.push_back(pch); 
 			pch = strtok(NULL, ":");
 		}
 		
-		hour = atoi(fields[0].c_str()); //αναθεση της ώρας στη μεταβλητή hour
-		min = atoi(fields[1].c_str()); //ανάθεση των λεπτών στη μεταβλητή min
+		hour = atoi(fields[0].c_str());
+		min = atoi(fields[1].c_str());
 		
-		//έλεγχος διαστήματος ώρας και λεπτών
-		if ((hour >=0 && hour<=23) && (min>=0 && min <=59)){ // check for valid hours and minutes
-			this -> t_arrive.hour = hour; //αποθήκευση της ώρας στο αντίστοιχο αντικείμενο
-			this -> t_arrive.min = min; //αποθήκευση των λεπτών στο αντίστοιχο αντικείμενο
+		// check validity of time
+		if ((hour >=0 && hour<=23) && (min>=0 && min <=59)){ 
+			this -> t_arrive.hour = hour; 
+			this -> t_arrive.min = min; 
 			flag = true;
 		}else{
 			cout << "Please insert a valid arriving time (e.g. 19:40)! ";
 			fields.clear();		
 		}	
 		
-	}while(!flag); //έξοδος αν η δοθείσα ώρα είναι ορθή
+	}while(!flag); 
 	
-	/* --ΚΟΣΤΟΣ ΕΙΣΙΤΗΡΙΟΥ-- */
+	/* --TICKET COST-- */
 	cout << "Ticket price: ";
 	LOOP5:do{
 		
 		getline(cin, temp);
 		flag = true;
 		
-		//έλεγχος εισόδου
+		// check input
 		if (!checkNumber(temp)){
 			cout << "Please insert a valid ticket price!" << endl;
 			flag = false;
@@ -610,7 +610,7 @@ void Flight::addFlight(){
 		}
 	}while(!flag);
 	
-	/* --ΤΥΠΟΣ ΑΕΡΟΠΛΑΝΟΥ-- */
+	/* --AIRCRAFT TYPE-- */
 	cout << "Aeroplane type: ";
 	getline(cin, this -> plane_type);
 	while(this -> plane_type.empty()){
@@ -618,14 +618,14 @@ void Flight::addFlight(){
 		getline(cin, this -> plane_type);
 	}
 	
-	/* --ΑΡΙΘΜΟΣ ΘΕΣΕΩΝ-- */
+	/* --No OF SEATS-- */
 	cout << "Number of seats: ";
 	LOOP6:do{
 		
 		getline(cin, temp);
 		flag = true;
 		
-		//έλεγχος εισόδου
+		// check input
 		if (!checkNumber(temp)){
 			cout << "Please insert a valid number of seats!" << endl;
 			flag = false;
@@ -636,14 +636,14 @@ void Flight::addFlight(){
 		}
 	}while(!flag);
 	
-	/* --ΑΡΙΘΜΟΣ ΚΛΕΙΣΜΕΝΩΝ ΘΕΣΕΩΝ-- */
+	/* --No of BOOKED SEATS-- */
 	cout << "Number of booked seats: ";
 	LOOP7:do{
 		
 		getline(cin, temp);
 		flag = true;
 		
-		//έλεγχος εισόδου
+		// check input
 		if (!checkNumber(temp)){
 			cout << "Please insert a valid number of booked seats!" << endl;
 			flag = false;
@@ -660,10 +660,10 @@ void Flight::addFlight(){
 	cout << endl;
 	
 	
-	flist.push_back(*this); //εκχώρηση αντικειμένου στη λίστα flist
+	flist.push_back(*this); // add object to the flist
 	
-	Queue q(this -> flightNo); //δημιουργία νέας ουράς για την εκάστοτε πτήση
-	qlist.push_back(q); //εισαγωγή αντικειμένου λίστα qlist
+	Queue q(this -> flightNo); // create new queue for the newly added flight
+	qlist.push_back(q); // add object to the qlist
 	
 	cout << "Flight No: "<< this -> flightNo << " was successfully added!" << endl;
 	
@@ -674,9 +674,9 @@ void Flight::deleteFlight(int num){
 		for (std::list<Queue>::iterator i = qlist.begin(); i != qlist.end(); ++i){
 			if( num == i -> getNo() ){
 				
-				//είσοδος μονο αν η ουρά αναμονής της εκάστοτε πτήσης ΔΕΝ είναι κενή
+				// enter if waiting queue for the flight is NOT empty
 				if (!i -> isEmpty()) {
-					//διαγραφή του αντικειμένου-πτήση από τη λίστα flist
+					// delete object from flist
 					for (std::list<Flight>::iterator i2 = flist.begin(); i2 != flist.end(); ++i2){
 						if( num == (i2 -> flightNo) ){
 							i2 = flist.erase(i2);
@@ -692,29 +692,28 @@ void Flight::deleteFlight(int num){
 				}
 			}
 		}
-		//αν δε βρεθεί ο αριθμός πτήσης, τερματίζει
 		cout << "This flight number doesn't exist!" << endl;
 		return;					
 }
 
 void Flight::displayFlightInfo(int num){
 
-	string l_time, a_time; //ώρες αναχώρησης και άφιξης πτήσης αντίστοιχα
+	string l_time, a_time; // departure and arrival time
 	stringstream convert; 
 	stringstream convert2; 
 	
 	for (std::list<Flight>::iterator i = flist.begin(); i != flist.end(); ++i) {
 		if (num == i -> flightNo) {
 				
-			convert.str(std::string());		//"άδεισμα" των στοιχείων του stringstream "convert"
-			convert2.str(std::string());	//"άδεισμα" των στοιχείων του stringstream "convert2"
+			convert.str(std::string()); // clear stringstream "convert"
+			convert2.str(std::string()); // clear stringstream "convert2"
 			
 			convert << i -> t_leave.hour;
 			convert2 << i -> t_leave.min;		 
 			l_time = convert.str() + ":" + convert2.str();
 				
-			convert.str(std::string());		//"άδεισμα" των στοιχείων του stringstream "convert"
-			convert2.str(std::string());	//"άδεισμα" των στοιχείων του stringstream "convert2"
+			convert.str(std::string()); // clear stringstream "convert"
+			convert2.str(std::string()); // clear stringstream "convert2"
 			
 			convert << i -> t_arrive.hour;
 			convert2 << i -> t_arrive.min;		 
@@ -733,7 +732,7 @@ void Flight::displayFlightInfo(int num){
 
 void Flight::displaySchedule(){
 	
-	string l_time, a_time; //ώρες αναχώρησης και άφιξης πτήσης αντίστοιχα
+	string l_time, a_time; // departure and arrivale time
 	stringstream convert; 
 	stringstream convert2; 
 	 
@@ -741,15 +740,15 @@ void Flight::displaySchedule(){
 		cout << left << setw(10) << "FLIGHT" << left << setw(10) << "FROM" << left << setw(10) << "TO" << left << setw(10) << "LEAVE" << left << setw(10) << "ARRIVE" << left << setw(10) << "COST" << left << setw(10) << "TYPE" << left << setw(10) << "SEATS" << left << setw(10) << "BOOKED" << endl;
 		
 		for (std::list<Flight>::iterator i = flist.begin(); i != flist.end(); ++i) {
-				convert.str(std::string());		//"άδεισμα" των στοιχείων του stringstream "convert"
-				convert2.str(std::string());	//"άδεισμα" των στοιχείων του stringstream "convert2"
+				convert.str(std::string());	// clear stringstream "convert"
+				convert2.str(std::string());	// clear stringstream "convert2"
 				
 				convert << i -> t_leave.hour;
 				convert2 << i -> t_leave.min;		 
 				l_time = convert.str() + ":" + convert2.str();
 				
-				convert.str(std::string());		//"άδεισμα" των στοιχείων του stringstream "convert"
-				convert2.str(std::string());	//"άδεισμα" των στοιχείων του stringstream "convert2"
+				convert.str(std::string());	// clear stringstream "convert"
+				convert2.str(std::string());	// clear stringstream "convert2"
 				
 				convert << i -> t_arrive.hour;
 				convert2 << i -> t_arrive.min;		 
@@ -790,51 +789,46 @@ bool Flight::checkForSeats(int num){
 	}
 }
 
-/* ----ΣΥΝΑΡΤΗΣΕΙΣ ΤΗΣ ΚΛΑΣΗΣ Person---- */	
+/* ----FUNCTIONS OF CLASS Person---- */	
 
 void Person::book(){
 	
-	/* ----ΔΗΛΩΣΗ-ΑΡΧΙΚΟΠΟΙΗΣΗ ΜΕΤΑΒΛΗΤΩΝ----*/
-	/* --ΠΤΗΣΕΙΣ-- */
-	string temp; //αποθηκεύoνται, προσωρινά, εισαγόμενα δεδομένα από το χρήστη για να ελεγχθούν
-	int num; //αποθηκεύεται ο αριθμός της εκάστοτε πτήσης, αφού έχει περάσει επιτυχή έλεγχο
+	/* ----INITIALISE VARS----*/
+	/* --FLIGHTS-- */
+	string temp; //temp to store user's input, to be checked
+	int num; // stores flight's number, after successful check
 	
-	/* --ΜΕΤΑΒΛΗΤΕΣ ΓΙΑ ΤΗΝ ΠΕΡΙΠΤΩΣΗ ΤΩΝ ΕΝΑΛΛΑΚΤΙΚΩΝ ΠΤΗΣΕΩΝ-- */
-	int	counter = 1; //αποθηκεύει το πλήθος(>=2) των εναλλακτικών 
-					//πτήσεων που εισήγαγε ο πελάτης
-	string choice; //αποθηκεύεται η επιλογή του χρήστη για 
-					//προσθήκη ή όχι επιπλέον εναλλακτικών πτήσεων
-	Time tArriving; //αποθήκευση ώρας άφιξης της κάθε πτήσης
-	Time tLeaving; //αποθήκευση ώρας αναχώρησης της κάθε πτήσης
-	string Departure; //αποθήκευση πόλης αναχώρηση της κάθε πτήσης
-	string Destination; //αποθήκευση πόλης άφιξης της κάθε πτήσης
-	list<int> nums; //προσωρινή λίστα για την αποθήκευση των αριθμών 
-					//των εναλλακτικών πτήσεων του πελάτη
-	list<int>::iterator i1 = nums.begin(); //iterator για την πρόσβαση
-					//στα στοιχεία της nums, για τον έλεγχο των στοιχείων των
-					//εναλλακτικών πτήσεων (ώρα άφιξης/αναχώρησης, πόλη άφιξης/αναχώρησης)
+	/* --VARS FOR NON DIRECT FLIGHTS-- */
+	int counter = 1; // stores the amount(>=2) of the non-direct flights
+	string choice; // stores user's choice for adding or not more flights to their reservation
+	Time tArriving; 
+	Time tLeaving; 
+	string Departure; 
+	string Destination; 
+	list<int> nums; // store flights' numbers 
+	list<int>::iterator i1 = nums.begin(); //iterator for accessing List nums
 	
-	/* --ΜΕΤΑΒΛΗΤΗ ΓΙΑ ΕΞΟΔΟ ΑΠΟ LOOPS-- */
+	/* --VAR FOR LOOPS-- */
 	bool flag = true;
 	
-	//"καθάρισμα' του stream
+	// clean stream
 	cin.clear();
 	cin.ignore(256,'\n');
 	
-	//έλεγχος αν η λίστα πτήσεων είναι κενή
 	if (!flist.empty()) {
 		cout << "Insert y (yes) for a new client or n (no) for an existing client. ";
 		getline(cin, choice);
-	
+		
+		// enter if client is new
 		if (choice == "y" || choice == "Y") {
 			
 			cout << "Please give us your personal info. " << endl;
 		
-			/* --ΟΝΟΜΑ-- */
+			/* --NAME-- */
 			cout << "Name: ";
 			flag = false;
 			
-			//έλεγχος εισόδου
+			// check input
 			LOOP8:do{
 				getline(cin, this -> name);
 				if ( (this -> name.length() <= 10) && (checkString(this -> name)) ){
@@ -845,11 +839,11 @@ void Person::book(){
 				}
 			}while(!flag);
 			
-			/* --ΕΠΩΝΥΜΟ-- */
+			/* --SURNAME-- */
 			cout << "Surname: ";
 			flag = false;
 			
-			//έλεγχος εισόδου
+			// check input
 			LOOP9:do{
 				getline(cin, this -> surname);
 				if ( (this -> surname.length() <= 10) && (checkString(this -> surname)) ){
@@ -860,10 +854,10 @@ void Person::book(){
 				}
 			}while(!flag);
 			
-			/* --ΑΡΙΘΜΟΣ ΔΙΑΒΑΤΗΡΙΟΥ-- */
+			/* --PASPPORT No-- */
 			cout << "Passport number: ";
 			
-			//έλεγχος εισόδου
+			// check input
 			LOOP10:do{
 				
 				getline(cin, temp);
@@ -883,11 +877,11 @@ void Person::book(){
 				}	
 			}while(!flag);
 			
-			/* --ΕΘΝΙΚΟΤΗΤΑ-- */
+			/* --NATIONALLITY-- */
 			cout << "Nationallity: ";
 			flag = false;
 			
-			//έλεγχος εισόδου
+			// check input
 			LOOP11:do{
 				
 				getline(cin, this -> nationallity);
@@ -900,32 +894,32 @@ void Person::book(){
 				}
 			}while(!flag);
 			
-			/* --ΔΙΕΥΘΥΝΣΗ-- */
+			/* --ADDRESS-- */
 			cout << "Address: ";
 			getline(cin, this -> address);
 			
-			/* --ΤΗΛΕΦΩΝΟ-- */
+			/* --TEL-- */
 			cout << "Telephone: "; 
 			getline(cin, temp);
 			
-			//έλεγχος εισόδου
+			// check input
 			while (!checkNumber(temp)) {
 				cout << "Please insert a valid telephone number!" << endl;
 				getline(cin, temp);
 			}
 			this -> tel = atoi(temp.c_str());
-		}else {
+		}else { // existing customer
 			cout << "Pleas give us your passport No: ";
 			getline(cin, temp);
 			
-			//έλεγχος εισόδου
+			// check input
 			while(!checkNumber(temp)){
 				cout << "Please insert a valid passport number!" << endl;
 				flag = false;
 				getline(cin, temp);
 			}
 				
-			//έλεγχος αν ο αριθμός διαβατηρίου υπάρχει στο σύστημα
+			// check if passport No is unique
 			if ( !(Person::uniquePass( atoi(temp.c_str()) ))) {
 					for (std::list<Person>::iterator i = plist.begin(); i != plist.end(); ++i){
 						if (atoi(temp.c_str()) == i -> passportNo) {
@@ -940,8 +934,8 @@ void Person::book(){
 								this -> flights.push_back(*i2);
 							}
 							
-							//αφού περάσουμε όλα τα στοιχεία του υπάρχοντος πελάτη,
-							//διαγράφουμε το παλιό αντικείμενο που δείχνει σε αυτόν
+							// after copying the customers info,
+							// delete the old object pointing to them
 							i = plist.erase(i);
 							break;
 						}
@@ -953,15 +947,15 @@ void Person::book(){
 		}
 		
 		
-		//εμφάνιση των πτήσεων στον πελάτη, ώστε να επιλέξει
+		// display flights
 		Flight::displaySchedule(); 
 		
-		/* --ΑΡΙΘΜΟΣ ΠΤΗΣΗΣ-- */
+		/* --FLIGTH No-- */
 		cout << "\n\nEnter the number of the flight you 're intrested in: ";
 		getline(cin, temp);
 		flag = true;
 		
-		//έλεγχος εισόδου
+		// check input
 		while ( !checkNumber(temp) && !Flight::flightExists(atoi(temp.c_str())) ) {
 			cout << "Please insert a valid Flight No!" << endl;
 			getline(cin, temp);
@@ -970,29 +964,29 @@ void Person::book(){
 		
 		/*
 		------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
-							ΚΡΑΤΗΣΗ ΑΠΕΥΘΕΙΑΣ ΠΤΗΣΗΣ ΠΕΛΑΤΗ Ή ΕΚΧΩΡΗΣΗ ΕΝΑΛΛΑΚΤΙΚΩΝ	 
+							BOOK CUSTOMER'S CHOSEN FLIGHT(S)	 
 		------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		*/
 		
-		//ΑΠΕΥΘΕΙΑΣ ΠΤΗΣΗ
-		if(Flight::checkForSeats(num)){ //έλεγχος για διαθέσιμη θέση στην απευθείας πτήση		
+		//DIRECT FLIGHT
+		if(Flight::checkForSeats(num)){ // check for vacancy		
 			this -> flights.push_back(num);
 			Flight::resSeat(num,1);
 			cout << "Your flight with No: " << num << " was successfully booked." << endl;
 		
-		//ΕΝΑΛΛΑΚΤΙΚΕΣ ΠΤΗΣΕΙΣ	
+		// NONO-DIRECT FLIGHT	
 		}else{
 			choice = "y";
 			
 			cout << "There are no available direct flights for this destination." << endl;
 			cout << "Please enter the special numbers for the alternative flights.";
 			
-			while(choice == "y" || choice == "Y"){ //έξοδος όταν ο χρήστης δε θέλει να εισάγει επιπλέον πτήσεις
+			while(choice == "y" || choice == "Y"){ // exit if user doesn't want to add more flights
 				
 		  LOOP12:cout << "\nNumber #" << counter << " : ";
 				getline(cin, temp);
 				
-				//έλεγχος εισόδου
+				// check input
 				while ( !checkNumber(temp) && !Flight::flightExists(atoi(temp.c_str())) ) {
 					cout << "Please insert a valid Flight No!" << endl;
 					cin >> temp;
@@ -1000,9 +994,9 @@ void Person::book(){
 				
 				num = atoi(temp.c_str());	
 								
-				if (counter > 1){ //είσοδος μόνο εάν ο χρήστης έχει εισάγει τουλάχιστον 2 αριθμούς πτήσεων			
+				if (counter > 1){ // enter if user has entered 2 or more flights			
 				
-					//αποθήκευση των ωρών αναχώρησης-άφιξης κααι των πόλεων αναχώρησης-άφιξης των πτήσεων
+					// store the arrival, departure time and the departure, arriving city
 					for (std::list<Flight>::iterator i2 = flist.begin(); i2 != flist.end(); ++i2) {
 						if (*i1 == i2 -> getFlightNo()) {					
 							tArriving = i2 -> getArrivingTime();
@@ -1013,42 +1007,40 @@ void Person::book(){
 						}
 					}
 					
-					//έλεγχος εγκυρότητας των πτήσεων ως προς την ώρα και τις πόλεις αναχώρησης-άφιξης
+					// check validity of each flight
 					if ( !(checkTime2(tLeaving,tArriving) && !Departure.compare(Destination)) ) {
 						cout << "Please enter a flight to a valid Destination!" << endl;
 						goto LOOP12;	
 					}
 				}
 				
-				nums.push_back(num); //αποθήκευση του αριθμού πτήσης στην προσωρινή λίστα nums			
+				nums.push_back(num); // add the flight's number		
 				i1++;
 				
-				if(counter >= 2){ //είσοδος μόνο αν ο χρήστης έχει εισάγει τουλάχιστον 2 αριθμούς πτήσεων
+				if(counter >= 2){ 
 					cout << "Do you want to add more flight numbers?(y/n) "; 
 					getline(cin, choice);
 				}
 				
 				counter++; 
-			}//έξοδος απο το while όταν ο χρήστης ΔΕΝ επιθυμεί να δώσει άλλες ενδιάμεσες πτήσεις
+			} 
 			
 			
-			//έλεγχος διαθέσιμων θέσεων στις πτήσεις που εισήγαγε ο πελάτης
-			//και εκχώρηση των κωδικών αυτών στο εκάστοτε κόμβο της λίστα flights 
+			// check for vacancies in the chosen flights
+			// and add all of the flight's numbers to the specific node of the list flights
 			for (std::list<int>::iterator i = nums.begin(); i != nums.end(); ++i){
 				flag = Flight::checkForSeats(*i) and flag;
 				this -> flights.push_back(*i);
 			}
 			
-			//είσοδος ΜΟΝΟ αν υπάρχουν διαθέσιμες θέσεις στις πτήσεις που εισήγαγε ο πελάτης
-			//και κράτηση θέσεων σε κάθε μία από αυτές
+			//enter ONLY if there are vacant seats and reserve a seat to each chosen flight
 			if(flag){
 				for (std::list<int>::iterator i = nums.begin(); i != nums.end(); ++i){				
 					Flight::resSeat(*i,1);
 				}
 				cout << "Your flights were successfully booked." << endl;
 			
-			//στην περίπτωση που δεν υπάρχει διαθέσιμη θέση σε τουλάχιστον μία από τις πτήσεις
-			//που εισήγαγε ο πελάτης, γίνεται προσθήκη στις ουρές αναμονής αυτών
+			// if, at least, one flight is fully booked add the customer to the queues of each flight
 			}else{
 				cout << endl;
 				cout << "Some of the flights you inserted were over booked." << endl;
@@ -1063,19 +1055,19 @@ void Person::book(){
 				cout << "We have added you in queues for each of these flights." << endl;
 			}
 		}
-		plist.push_back(*this); //καταχώρηση του αντικειμένου-πελάτη στη λίστα plist
+		plist.push_back(*this); // add object to plist
 	}else{
 		cout << "There are no available flights at the moment." << endl;
 		return;
 	}	
 }
 
-void Person::bookFromQueue(int num){  //καλείται ΜΟΝΟ μέσω της cancel()
+void Person::bookFromQueue(int num){  //is called only from cancel()
 	
-	bool flag = true; //για έξοδο από LOOPS
-	Person queueFront; //το αντικείμενο του αρχαιότερου πελάτη στην ουρά αναμονής της εκάστοτε πτήσης
+	bool flag = true;
+	Person queueFront; // object of the customer added last
 
-	//εύρεση του αρχαιότερου χρήστης στην ουρά αναμονής της εκάστοτε πτήσης
+	// find the oldest customer
 	for (std::list<Queue>::iterator it = qlist.begin(); it != qlist.end(); ++it){
 		if (num == it -> getNo() ){
 			if( !(it -> isEmpty()) ){
@@ -1087,20 +1079,20 @@ void Person::bookFromQueue(int num){  //καλείται ΜΟΝΟ μέσω τη�
 		}
 	}
 	
-	//έλεγχος αν όλες οι πτήσεις του αρχαιότερου πελάτη έχουν διαθέσιμες θέσεις
+	// check if all of the customer's chosen flights have vacant seats
 	for (std::list<int>::iterator i = queueFront.flights.begin(); i != queueFront.flights.end(); ++i){
 		flag = Flight::checkForSeats(*i) and flag;
 	}
 	
-	//είσοδος μόνο εάν υπάρχουν διαθέσιμες θέσεις σε όλες τις πτήσεις του αρχαιότερου πελάτη
-	// και κράτηση θέσεων σε κάθε μια από αυτές
+	// enter ONLY if there are vacancies in ALL of the customer's chosen flights
+	// and book them
 	if(flag){			
 		Node* p = new Node; 
 		
-		//προσπέλαση σε όλες τις πτήσεις του αρχαιότερου χρήστη
+		// find the flights of the oldest customer
 		for (std::list<int>::iterator i = queueFront.flights.begin(); i != queueFront.flights.end(); ++i){
 			
-			//αναζήτηση στις ουρές αναμονής που βρίσκεται ο αρχαιότερος χρήστης, βάσει των πτήσεών του
+			// delete him from the queues
 			for (std::list<Queue>::iterator i2 = qlist.begin(); i2 != qlist.end(); ++i2) {				
 				if(*i == i2 -> getNo()){
 					p = i2 -> getFront();		
@@ -1120,31 +1112,31 @@ void Person::bookFromQueue(int num){  //καλείται ΜΟΝΟ μέσω τη�
 
 void Person::cancel(){
 		
-	string passport, num; //αποθηκεύεται ο αριθμός διαβατηρίου και πτήσης που εισάγει ο χρήστης αντίστοιχα
-	int counter = 1; //counter που αποθηκεύεται το πλήθος των λανθασμένων εισαγωγών του πελάτη
-	bool flightFound = false; //είναι false αν η ο αριθμός πτήσης που εισήγαγε ο χρήστης υπάρχει στις πτήσεις του
-	bool isInQueue = false; //είναι false όταν ο προς διαγραφή πελάτης ΔΕΝ ανήκει στην ουρά αναμονής της εκάστοτε πτήσης
+	string passport, num; 
+	int counter = 1; //counter that stores user's wrong inputs
+	bool flightFound = false; // is false if customer has already booked a seat in a flight
+	bool isInQueue = false; //is false if the customer, that will be deleted, doesn't belong in
+				// the queue of each flight
 	
 	if (!plist.empty()) {
-		//"καθάρισμα' του stream
+		// clean stream
 		cin.clear();
 		cin.ignore(256,'\n');
 		
 		cout << "Please give us your passport number: ";
 		getline(cin, passport); cout << endl;
 		
-		//έλεγχος αν ο αριθμός διαβατηρίου είναι αριθμός
+		// check input
 		while(!checkNumber(passport)){
 			cout << "Please insert a valid passport number!" << endl;
 			getline(cin, passport); cout << endl; 
 		}
 		
-		//έλεγχος για την εγκυρότητα του αριθμού διαβατηρίου
 		while(!Person::displayPersonInfo( atoi(passport.c_str()) )) {
 					
 			//έξοδος από το πρόγραμμα αν δοθεί λανθασμένος αριθμός διαβατηρίου 5 φορές
 			if (counter == 5) {
-				cout << "Wrong passport number was given too many times.";
+				cout << "Wrong passporst number was given too many times.";
 				return;
 			}else{
 				cout << "Please check your Passport Number." << endl;
@@ -1163,22 +1155,22 @@ void Person::cancel(){
 		getline(cin, num);
 		counter = 1;
 		
-		//έλεγχος αν ο αριθμός πτήσης αποτελέιται μόνο από ψηφία
+		// check input
 		while(!checkNumber(num)){
 			cout << "Please insert a valid flight number!" << endl;
 			getline(cin, num); cout << endl; 
 		}
 		
-		//προσπέλαση των πτήσεων του εκάστοτε πελάτη
+		// iterate through the passenger's flights
 		for (std::list<Person>::iterator i = plist.begin(); i != plist.end(); ++i){
 			if (atoi(passport.c_str()) == i -> passportNo) {	
 				
-				//έλεγχος εγκυρότητας αριθμού πτήσης και έξοδος από τη συνάρτηση αν δοθεί λάθος κωδικός πτήσης 5 φορές
+				// check input and exit if counter = 5
 				do{										
 					for (std::list<int>::iterator i2 = (i -> flights).begin(); i2 != (i -> flights).end(); ++i2){
 						if (atoi(num.c_str()) == *i2) {
 							flightFound = true;
-							i2 = flights.erase(i2); //διαγραφή πτήσης από τα στοιχεία του πελάτη
+							i2 = flights.erase(i2); // delete flight from passenger's info
 							break;
 						}
 					}
@@ -1190,44 +1182,43 @@ void Person::cancel(){
 						cout << "Please check your flight number!.";
 						getline(cin, num); cout << endl;
 						
-						//έλεγχος αν ο αριθμός πτήσης αποτελέιται μόνο από ψηφία
+						// check input
 						while(!checkNumber(num)){
 						cout << "Please insert a valid flight number!" << endl;
 						getline(cin, num); cout << endl; 
 						}
 					}				
 					counter++;
-				}while(!flightFound); //έξοδος μόνο αν δοθεί έγκυρος κωδικός πτήσης
+				}while(!flightFound);
 				break;
 			}
 		}
 		
-		//διαγραφή του αντικειμένου του πελάτη από την ουρά αναμονής της εκάστοτε πτήσης, ΑΝ υπάρχει σε αυτή
+		// delete client from the queue of the flight, if they are a part of it
 		for (std::list<Queue>::iterator i = qlist.begin(); i != qlist.end(); ++i){
 			if( atoi(num.c_str()) == i -> getNo() ){
 				if(!i -> isEmpty()){
 					Node* p = new Node;			
-					Node* previousNode; //δείκτης για τη διαχείριση θέσεων κόμβων κατά τη διαγραφή στοιχείου
-										//από ουρά αναμονής με παραπάνω από 1 στοιχείο
+					Node* previousNode;
 					p = i -> getFront();
 					
 					while(p!=NULL){
 						if (atoi(passport.c_str()) == p -> person.passportNo){
 							isInQueue = true;
 							
-							//είσοδος εάν ο πελάτης βρίσκεται στην πρώτη θέση της ουράς αναμονής της εκάστοτε πτήσης
+							// enter if the client is on the first position
 							if (p == i -> getFront()){
 								i -> setFront(p -> next);
-								//είσοδος αν πρόκεται για το μόνο στοιχείο στην ουρά αναμονής
+								// enter if queue has only one element
 								if (i -> getFront() == i -> getRear()){
 									i -> setRear(NULL);
 								}						
-							}else if(p == i -> getRear()){ //είσοδος εάν ο πελάτης βρίσκεται στην τελευταία θέση της ουράς αναμονής της εκάστοτε πτήσης
+							}else if(p == i -> getRear()){ // enter if client is in the last poitsion of the queue
 								previousNode -> next = NULL;								
-							}else{ //είσοδος σε κάθε άλλη περίπτωση
+							}else{ 
 								previousNode -> next = p -> next;								
 							}
-							delete(p);//διαγραφή από την ουρά αναμονής της εκάστοτε πτήσης
+							delete(p);
 							break;						
 						}
 						previousNode = p;
@@ -1237,12 +1228,11 @@ void Person::cancel(){
 			}
 		}
 		
-		//είσοδος ΜΟΝΟ αν ο πελάτης ΔΕΝ υπάρχει στην ουρά αναμονής της εκάστοτε πτήσης
+		//enter if passenger is NOT part of the current queue
 		if (!isInQueue){
-			Flight::resSeat(atoi(num.c_str()), -1); //μείωση των κλεισμένων θέσεων κατά μία στην εκάστοτε πτήση		
+			Flight::resSeat(atoi(num.c_str()), -1); 		
 		
-			this -> bookFromQueue(atoi(num.c_str())); //κλήση της bookFromQueue ώστε να γίνει κράτηση για τον αρχαιότερο πελάτη
-									// στην ουρά αναμονής της εκάστοτε πτήσης, αν υπάρχει
+			this -> bookFromQueue(atoi(num.c_str()));
 		}
 		cout << "\nYour reservation was successfully removed! \n" << endl;
 	}else {
